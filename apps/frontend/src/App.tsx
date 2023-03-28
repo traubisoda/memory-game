@@ -1,27 +1,38 @@
-import './App.css'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { increment, selectCount } from '@/store/features/counter/counter.slice'
+import { selectGameStatus, startGame } from '@/store/features/app/app.slice'
+import reactLogo from './assets/react.svg'
+import PlayersForm from '@/components/players-form/PlayersForm'
 
-function App() {
-	const count = useAppSelector(selectCount)
+const Menu = () => {
 	const dispatch = useAppDispatch()
 
 	return (
-		<div className="App">
-			<div>
-				<h1 className="font-lg text-blue-400">Tailwind</h1>
-			</div>
-			<h1>Vite + React</h1>
-			<div className="card">
-				<button onClick={() => dispatch(increment())}>count is {count}</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className="read-the-docs">
-				Click on the Vite and React logos to learn more
-			</p>
+		<div>
+			Menu
+			<img src={reactLogo} width={50} height={50} />
+			<PlayersForm />
+			<button onClick={() => dispatch(startGame())}>Start game</button>
 		</div>
+	)
+}
+const Game = () => <div>Game</div>
+function App() {
+	const gameStatus = useAppSelector(selectGameStatus)
+	let component;
+
+	switch (gameStatus) {
+		case 'menu':
+			component = <Menu />
+			break
+		case 'playing':
+			component = <Game />
+			break
+		default:
+			component = <Menu />
+	}
+
+	return (
+		<div className="App">{ component }</div>
 	)
 }
 
