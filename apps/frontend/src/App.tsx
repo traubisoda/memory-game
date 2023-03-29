@@ -1,20 +1,8 @@
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { selectGameStatus, startGame } from '@/store/features/app/app.slice'
-import reactLogo from './assets/react.svg'
-import PlayersForm from '@/components/players-form/PlayersForm'
+import { useAppSelector } from '@/store/hooks'
+import { selectGameStatus } from '@/store/features/app/app.slice'
+import GameMenu from '@/components/game-menu/GameMenu'
 
-const Menu = () => {
-	const dispatch = useAppDispatch()
 
-	return (
-		<div>
-			Menu
-			<img src={reactLogo} width={50} height={50} />
-			<PlayersForm />
-			<button onClick={() => dispatch(startGame())}>Start game</button>
-		</div>
-	)
-}
 const Game = () => <div>Game</div>
 function App() {
 	const gameStatus = useAppSelector(selectGameStatus)
@@ -22,13 +10,13 @@ function App() {
 
 	switch (gameStatus) {
 		case 'menu':
-			component = <Menu />
+			component = <GameMenu />
 			break
 		case 'playing':
 			component = <Game />
 			break
 		default:
-			component = <Menu />
+			component = <GameMenu />
 	}
 
 	return (
