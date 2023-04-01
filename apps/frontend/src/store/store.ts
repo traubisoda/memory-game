@@ -1,10 +1,14 @@
-import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit'
+import {
+	combineReducers,
+	configureStore,
+	PreloadedState,
+} from '@reduxjs/toolkit'
 import appReducer from '@/store/features/app/app.slice'
-import playersReducer from '@/store/features/players/players.slice'
+import gameReducer from '@/store/features/game/game.slice'
 
 const rootReducer = combineReducers({
 	app: appReducer,
-	players: playersReducer,
+	game: gameReducer,
 })
 export function setupStore(preloadedState?: PreloadedState<RootState>) {
 	return configureStore({

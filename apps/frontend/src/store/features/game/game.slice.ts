@@ -1,19 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '@/store/store'
 import uuid from 'react-uuid'
+import { RootState } from '@/store/store'
 
-interface PlayerState {
+export interface GameState {
+	status: 'uninitialized' | 'initializing' | 'ready'
+	board: Card[]
+	scoreBoard: ScoreBoard
+	activePlayer: Player | undefined
 	players: Player[]
-	error: string
+	error: string | undefined
 }
 
-const initialState: PlayerState = {
+const initialState: GameState = {
+	status: 'uninitialized',
+	board: [],
+	activePlayer: undefined,
 	players: [],
-	error: '',
+	error: undefined,
+	scoreBoard: {},
 }
 
-export const playersSlice = createSlice({
-	name: 'players',
+export const gameSlice = createSlice({
+	name: 'game',
 	initialState,
 	reducers: {
 		addPlayer: (state, action: PayloadAction<string>) => {
@@ -40,8 +48,8 @@ export const playersSlice = createSlice({
 	},
 })
 
-export const selectPlayers = (state: RootState) => state.players.players
+export const selectPlayers = (state: RootState) => state.game.players
 
-export const { addPlayer } = playersSlice.actions
+export const { addPlayer } = gameSlice.actions
 
-export default playersSlice.reducer
+export default gameSlice.reducer

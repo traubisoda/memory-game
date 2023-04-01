@@ -1,45 +1,45 @@
-import reducer, { addPlayer } from '@/store/features/players/players.slice'
+import reducer, { addPlayer, GameState } from '@/store/features/game/game.slice'
 import uuid from 'react-uuid'
 
-describe('PlayersSlice', () => {
+const INITIAL_STATE: GameState = {
+	status: 'uninitialized',
+	board: [],
+	activePlayer: undefined,
+	players: [],
+	error: undefined,
+	scoreBoard: {},
+}
+
+describe('GameSlice', () => {
 	it('should return the initial state', () => {
-		expect(reducer(undefined, { type: undefined })).toEqual({
-			players: [],
-			error: '',
-		})
+		expect(reducer(undefined, { type: undefined })).toEqual(INITIAL_STATE)
 	})
 
 	it('should add players', () => {
-		const initialState = {
-			players: [],
-			error: '',
-		}
-
-		expect(reducer(initialState, addPlayer('Player 1'))).toEqual({
+		expect(reducer(INITIAL_STATE, addPlayer('Player 1'))).toEqual({
+			...INITIAL_STATE,
 			players: [{ id: expect.any(String), name: 'Player 1' }],
-			error: '',
 		})
 	})
 
 	it('should add more than 1 player', () => {
 		const initialState = {
-			players: [
-				{ id: uuid(), name: 'Player 1' },
-			],
-			error: '',
+			...INITIAL_STATE,
+			players: [{ id: uuid(), name: 'Player 1' }],
 		}
 
 		expect(reducer(initialState, addPlayer('Player 2'))).toEqual({
+			...INITIAL_STATE,
 			players: [
 				{ id: expect.any(String), name: 'Player 1' },
 				{ id: expect.any(String), name: 'Player 2' },
 			],
-			error: '',
 		})
 	})
 
 	it('should not add more than 5 players', () => {
 		const initialState = {
+			...INITIAL_STATE,
 			players: [
 				{ id: uuid(), name: 'Player 1' },
 				{ id: uuid(), name: 'Player 2' },
@@ -50,35 +50,36 @@ describe('PlayersSlice', () => {
 			error: '',
 		}
 
-		expect(reducer(initialState, addPlayer( 'Player 6'))).toEqual({
+		expect(reducer(initialState, addPlayer('Player 6'))).toEqual({
+			...INITIAL_STATE,
 			players: initialState.players,
-			error: 'Maximum number of players is 5'
+			error: 'Maximum number of players is 5',
 		})
 	})
 
 	it('should not add a player with the same name', () => {
 		const initialState = {
-			players: [
-				{ id: uuid(), name: 'Player 1' },
-			],
-			error: '',
+			...INITIAL_STATE,
+			players: [{ id: uuid(), name: 'Player 1' }],
 		}
 
 		expect(reducer(initialState, addPlayer('Player 1'))).toEqual({
+			...INITIAL_STATE,
 			players: initialState.players,
-			error: 'Player name already exists'
+			error: 'Player name already exists',
 		})
 	})
 
 	it('should not add a player with an empty name', () => {
 		const initialState = {
+			...INITIAL_STATE,
 			players: [],
-			error: '',
 		}
 
 		expect(reducer(initialState, addPlayer(''))).toEqual({
+			...INITIAL_STATE,
 			players: initialState.players,
-			error: 'Player name cannot be empty'
+			error: 'Player name cannot be empty',
 		})
 	})
 })
