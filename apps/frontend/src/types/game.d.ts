@@ -7,7 +7,7 @@ type ScoreBoard = Record<(typeof Player)['id'], number>
 
 type Card = {
 	id: string
-	index: number
 	found: boolean
+	selected: boolean
 	imageUrl: string
 }

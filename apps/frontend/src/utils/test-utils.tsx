@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import type { AppStore, RootState } from '@/store/store'
 // As a basic setup, import your same slice reducers
 import appReducer from '@/store/features/app/app.slice'
-import playersReducer from '@/store/features/players/players.slice'
+import gameReducer from '@/store/features/game/game.slice'
 
 // This type interface extends the default options for render from RTL, as well
 // as allows the user to specify other things such as initialState, store.
@@ -25,7 +25,7 @@ export function renderWithProviders(
 		store = configureStore({
 			reducer: {
 				app: appReducer,
-				players: playersReducer,
+				game: gameReducer,
 			},
 			preloadedState,
 		}),
