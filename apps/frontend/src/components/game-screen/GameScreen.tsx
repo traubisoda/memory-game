@@ -8,6 +8,7 @@ import {
 	selectGameStatus,
 	selectScoreboard,
 } from '@/store/features/game/game.slice'
+import Card from '@/components/card/Card'
 
 const GameScreen = () => {
 	const dispatch = useAppDispatch()
@@ -20,7 +21,9 @@ const GameScreen = () => {
 	}
 
 	useEffect(() => {
-		dispatch(initializeGame())
+		if (gameStatus === 'uninitialized') {
+			dispatch(initializeGame())
+		}
 	}, [])
 
 	if (gameStatus === 'initializing') {
@@ -31,7 +34,7 @@ const GameScreen = () => {
 		<div>
 			<div>{activePlayer.name}'s turn</div>
 			<div className="flex">
-				<div className="w-1/3">
+				<div className="w-1/3" role="scoreboard">
 					{scoreBoard.map((item) => (
 						<div key={item.player.id}>
 							{item.player.name}: {item.score}
@@ -40,32 +43,12 @@ const GameScreen = () => {
 				</div>
 				<div className="grid grid-cols-6 gap-2 p-2">
 					{board.map((item: Card, index: number) => (
-						<div
+						<Card
 							key={index}
-							className={`relative aspect-square overflow-hidden rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] ${
-								item.selected ? '[transform:rotateY(180deg)]' : ''
-							} ${
-								gameStatus === 'busy'
-									? 'pointer-events-none'
-									: 'pointer-events-auto cursor-pointer'
-							}`}
+							cardItem={item}
+							disabled={gameStatus === 'busy' || item.found}
 							onClick={onCardClick(index)}
-						>
-							<img
-								src={item.imageUrl}
-								className={`'aspect-square h-auto w-full object-cover`}
-							/>
-							{!item.found && (
-								<div
-									className={`absolute inset-0 bg-gradient-to-br from-cyan-500 to-pink-500 transition-all duration-500  [transform-style:preserve-3d] [backface-visibility:hidden] ${
-										item.selected ? '[transform:rotateY(180deg)]' : ''
-									} `}
-								></div>
-							)}
-							{item.found && (
-								<div className="absolute inset-0 border border-gray-200 bg-gray-100"></div>
-							)}
-						</div>
+						/>
 					))}
 				</div>
 			</div>
