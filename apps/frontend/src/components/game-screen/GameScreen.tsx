@@ -31,10 +31,10 @@ const GameScreen = () => {
 	}
 
 	return (
-		<div>
+		<div data-testid="game-screen">
 			<div>{activePlayer.name}'s turn</div>
 			<div className="flex">
-				<div className="w-1/3" role="scoreboard">
+				<div className="w-1/3" data-testid="scoreboard">
 					{scoreBoard.map((item) => (
 						<div key={item.player.id}>
 							{item.player.name}: {item.score}
@@ -45,6 +45,7 @@ const GameScreen = () => {
 					{board.map((item: Card, index: number) => (
 						<Card
 							key={index}
+							data-testid={`card-${index}`}
 							cardItem={item}
 							disabled={gameStatus === 'busy' || item.found}
 							onClick={onCardClick(index)}

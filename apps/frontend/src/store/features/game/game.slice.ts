@@ -5,6 +5,7 @@ import {
 	PayloadAction,
 } from '@reduxjs/toolkit'
 import uuid from 'react-uuid'
+import { BUSY_TIMEOUT_ON_MATCH, BUSY_TIMEOUT_ON_SELECT } from '@/config'
 import { AppDispatch, RootState } from '@/store/store'
 
 const NUMBER_OF_CARDS = 18
@@ -173,11 +174,11 @@ export const cardClick =
 				}
 				dispatch(deselectCards())
 				dispatch(setBusy({ busy: false }))
-			}, 1500)
+			}, BUSY_TIMEOUT_ON_MATCH)
 		} else {
 			setTimeout(() => {
 				dispatch(setBusy({ busy: false }))
-			}, 500)
+			}, BUSY_TIMEOUT_ON_SELECT)
 		}
 	}
 
